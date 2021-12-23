@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Class Roulette", "Class Roulette\Class Roulette.csproj", "{6BD638E7-4014-404D-A05B-B7E6EA98BB5E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6BD638E7-4014-404D-A05B-B7E6EA98BB5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BD638E7-4014-404D-A05B-B7E6EA98BB5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BD638E7-4014-404D-A05B-B7E6EA98BB5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BD638E7-4014-404D-A05B-B7E6EA98BB5E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A3E387A1-208A-40BB-8582-8EE1E8505D85}
+	EndGlobalSection
+EndGlobal
