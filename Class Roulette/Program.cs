@@ -28,7 +28,6 @@ namespace Class.Roulette
         {
             Random r = new Random();
             RandomNumber = r.Next(0, 36);
-            RandomNumber = 1;
 
             while (Balance != 0)
             {
