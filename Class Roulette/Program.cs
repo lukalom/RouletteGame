@@ -1,66 +1,75 @@
 ﻿using System;
+using System.Linq;
 
-namespace Class_Roulette
+namespace Class.Roulette
 {
     internal class Program
     {
         static void Main(string[] args)
         {
             Roulette game = new Roulette(1000);
-
+            game.Run();
         }
     }
     class Roulette
     {
         private double Balance;
         int[] red = { 32, 19, 21, 25, 34, 27, 36, 30, 23, 5, 16, 1, 14, 9, 18, 7, 12, 3 };
-        int[] black = { 15, 4, 2, 17, 6, 13, 11, 8, 10, 24, 33, 20, 31, 22, 29, 28, 35, 26 };
 
         private int RandomNumber;
-        private int RandomColor;
         private int? UserBet;
         public Roulette(int balance)
         {
             Balance = balance;
 
-            run(); //game starter
         }
 
-        public void run()
+        public void Run()
         {
             Random r = new Random();
-            int redRandomNum = red[r.Next(0, 18)];
-            int blackRandomNum = black[r.Next(0, 18)];
-            RandomColor = r.Next(1, 3);
-            RandomNumber = (RandomColor == 1) ? redRandomNum : blackRandomNum;
+            RandomNumber = r.Next(0, 36);
+            RandomNumber = 1;
 
             while (Balance != 0)
             {
-                UserBet = ValidBet();
+                UserBet = SelectBet();
                 if (UserBet != null)
                 {
-                    int? userValidNumber = ValidNumber();
-                    int? userValidColor = ValidColor();
+                    int? userSelectNumber = SelectNumber();
 
-                    if (userValidNumber != null && userValidColor != null)
+                    if (userSelectNumber == 0)
                     {
-                        Console.WriteLine($"Computer Random Number: {RandomNumber} color: {RandomColor}");
-                        CheckWinner((int)userValidNumber, (int)userValidColor);
+
+                        Balance += (double)(36 * UserBet);
+                        Console.WriteLine($"its Zero you Won 36X current balance: {Balance}");
+
                     }
                     else
                     {
-                        Console.WriteLine("Incorrect Number or Color");
+                        int? userSelectColor = SelectColor();
+
+                        if (userSelectNumber != null && userSelectColor != null)
+                        {
+
+                            CheckWinner((int)userSelectNumber, (int)userSelectColor);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Incorrect Number or Color");
+
+                        }
                     }
+
                 }
                 else
                 {
-                    break;
+                    continue;
                 }
 
             }
         }
 
-        private int? ValidNumber()
+        private int? SelectNumber()
         {
             Console.Write("Choose number from (0, 35) range: ");
             bool isNumber = int.TryParse(Console.ReadLine(), out int number);
@@ -75,9 +84,9 @@ namespace Class_Roulette
             }
         }
 
-        private int? ValidColor()
+        private int? SelectColor()
         {
-            Console.Write("Choose Color red = 1 black = 2 :");
+            Console.Write("Choose Color black = 1 red = 2 :");
             bool isColor = int.TryParse(Console.ReadLine(), out int color);
 
             if (isColor && (color == 1 || color == 2))
@@ -90,7 +99,7 @@ namespace Class_Roulette
             }
         }
 
-        private int? ValidBet()
+        private int? SelectBet()
         {
             Console.Write("Bet Money between 0 to 60: ");
             bool isBetMoney = int.TryParse(Console.ReadLine(), out int betMoney);
@@ -106,7 +115,6 @@ namespace Class_Roulette
                 {
                     Console.WriteLine("you dont have enought money ;(");
                     return null;
-
                 }
             }
             else
@@ -116,26 +124,40 @@ namespace Class_Roulette
             }
         }
 
-        private void CheckWinner(int userValidNumber, int userValidColor)
+        private void CheckWinner(int userSelectNumber, int userSelectColor)
         {
-            if (this.RandomNumber == userValidNumber && userValidColor == this.RandomColor)
+            if (RandomNumber == userSelectNumber && userSelectColor == 1 && !this.red.Contains(userSelectNumber) && !red.Contains(RandomNumber))
             {
-                Balance = (double)(Balance + UserBet * 2 + UserBet / 5);
-                Console.WriteLine($"Your number and color is matching you won {UserBet * 2 + UserBet / 5} current Balance {Balance}");
+                Balance += (double)(2 * UserBet + UserBet / 5);
+                Console.WriteLine($"you Won {2 * UserBet + UserBet / 5} current balance: {Balance}");
+                Console.WriteLine($"you color {userSelectColor} number {userSelectNumber}");
             }
-            else if (this.RandomNumber == userValidNumber)
+            else if (RandomNumber == userSelectNumber && userSelectColor == 2 && red.Contains(userSelectNumber) && red.Contains(RandomNumber))
             {
-                Console.WriteLine("Numbers is matching but collor is incorrect");
+                Balance += (double)(2 * UserBet + UserBet / 5);
+                Console.WriteLine($"you Won {2 * UserBet + UserBet / 5} current balance: {Balance}");
+                Console.WriteLine($"you color {userSelectColor} number {userSelectNumber}");
             }
-            else if (userValidColor == this.RandomColor)
+            else if (RandomNumber == userSelectNumber)
             {
-                Console.WriteLine("Collors is matching but number is incorrect");
+                Balance += (double)(2 * UserBet);
+                Console.WriteLine($"you Won {2 * UserBet} current balance: {Balance}");
+            }
+            else if (userSelectColor == 1 && !red.Contains(RandomNumber))
+            {
+                Balance += (double)(UserBet / 5);
+                Console.WriteLine($"you Won {UserBet / 5} current balance: {Balance}");
+            }
+            else if (userSelectColor == 2 && red.Contains(RandomNumber))
+            {
+                Balance += (double)(UserBet / 5);
+                Console.WriteLine($"you Won {UserBet / 5} current balance: {Balance}");
             }
             else
             {
-                Balance = (double)(Balance - UserBet);
-                Console.WriteLine($"You lost :{UserBet} current Balance {Balance}");
-                Console.WriteLine($"Your Number: {userValidNumber} color: {userValidColor}");
+                Balance -= (double)(UserBet);
+                Console.WriteLine($"You lost computer picked number: {RandomNumber} current balance: {Balance}");
+
             }
         }
     }
